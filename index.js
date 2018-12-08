@@ -1,11 +1,10 @@
 let prect_counter = 0;
 $("#ProgramContent").bind("DOMSubtreeModified", function () {
     // Triggered Twice
-    $('#inject').text("正在载入... 💀已做：" + getPrecticeDone() + "题");
     call()
 })
 $('#divProgram').append("<p id='inject'>Dalvik's Here</p>")
-$('#page').append("<style>.glLineNumber {user-select: none !important;} </style>");
+$('.page').append("<style>.glLineNumber {user-select: none !important;} .href-retry {color: blue !important;} .href-retry:hover {opacity: .7 !important;}</style>");
 call();
 
 function getPrecticeDone() {
@@ -24,7 +23,15 @@ function getByteCount(s) {
     return count;
 }
 
+function printMessage(icon, message, retry = false) {
+    $('#inject').text(icon + " " + message + " 💀已做：" + getPrecticeDone() + "题")
+    if(retry) {
+        $('#inject').append("&nbsp;&nbsp;<a class=\"href-retry\" onclick=\"call()\" href=\"javascript:;\">重试</a>");
+    }
+}
+
 function call() {
+    printMessage("", "正在载入...");
     const data = $("#ProgramContent").html()
     if (data.length == 0) return;
     $.ajax({
@@ -36,14 +43,14 @@ function call() {
         },
         statusCode: {
             200: function () {
-                $('#inject').text("√ 已复制 💀已做：" + getPrecticeDone() + "题")
+                printMessage("√", "已复制");
             },
             500: function () {
-                alert("× 无法解析本题 💀已做：" + getPrecticeDone() + "题");
+                printMessage("×", "无法解析本题", true);
             }
         },
         error: function () {
-            $('#inject').text("× 无法连接到解析器 💀已做：" + getPrecticeDone() + "题")
+            printMessage("×", "无法连接到解析器", true)
         }
     });
 }

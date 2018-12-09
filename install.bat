@@ -21,6 +21,7 @@ goto pip
 :pip
 echo Installing dependents
 pip install %bat_path:~0,-1%\whl\pyperclip-1.7.0.tar.gz
+pip install %bat_path:~0,-1%\whl\websockets-7.0-cp37-cp37m-macosx_10_6_intel.whl
 echo.
 echo Done.
 REM type index.min.js | clip

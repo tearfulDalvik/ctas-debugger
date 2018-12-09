@@ -21,10 +21,16 @@ import sys
 import re
 import html
 import os
+import platform
 import pyperclip
+import asyncio
+import json
+import websockets
 
 _SERVER_PORT = 12345
 _DEBUG = False
+
+server = False
 
 class bcolors:
     HEADER = '\033[95m'
@@ -38,32 +44,44 @@ class bcolors:
 
 def signal_handler(sig, frame):
     log("SIGINT exit")
-    httpd.server_close()
     sys.exit(0)
     
 def log(packet):
     if _DEBUG:
         print(packet)
 
-def processData(postvars):
-    # 更换莫名的空格成空格
-    postvars = postvars.replace(b'\xe3\x80\x80', b'\x20').decode("utf-8")
-    # 删掉行号
-    postvars = re.sub(r"<div *class= *\" *glLineNumber *\">\d+ *</div>(\d{,3})?(\))?", "" , postvars)
-    # 处理换行
-    postvars = postvars.replace("<br>", "\n")
-    # 替换中文符号
-    postvars = re.sub(r"(“|”)", r"\"" , postvars)
-    postvars = re.sub(r"(‘|’)", r"\'" , postvars)
-    postvars = postvars.replace("（", "(")
-    postvars = postvars.replace("）", ")")
-    # 取消 HTML 实体
-    postvars = html.unescape(postvars)
-    pyperclip.copy(postvars)
-    log("\n======== 已复制 ========\n")
-    log(postvars)
-    if (_DEBUG):
-        exit(0)
+async def processData(websocket, path):
+    while True:
+        data = json.loads(await websocket.recv())
+        postvars = data['content']
+        # 更换莫名的空格成空格
+        postvars = postvars.encode("utf-8").replace(b'\xe3\x80\x80', b'\x20').decode("utf-8")
+        # 删掉行号
+        postvars = re.sub(r"<div *class= *\" *glLineNumber *\">\d+ *</div>(\d{,3})?(\))?", "" , postvars)
+        # 处理换行
+        postvars = postvars.replace("<br>", "\n")
+        # 替换中文符号
+        postvars = re.sub(r"(“|”)", r"\"" , postvars)
+        postvars = re.sub(r"(‘|’)", r"\'" , postvars)
+        postvars = postvars.replace("（", "(")
+        postvars = postvars.replace("）", ")")
+        # 取消 HTML 实体
+        postvars = html.unescape(postvars)
+        pyperclip.copy(postvars)
+        log("\n======== 已复制 ========\n")
+        log(postvars)
+        await websocket.send(json.dumps({"req": "question", "status": 200}, sort_keys=True))
+        try:
+            f = open("cache/problem.cpp", "w")
+            f.write(postvars)
+            compi= os.popen("g++ cache/problem.cpp -o cache/problem")
+            if(platform.system() == "Darwin"):
+                os.system('open cache/problem')
+        except:
+            await websocket.send(json.dumps({"req": "compile", "status": 500, "content": compi}, sort_keys=True))
+        if (_DEBUG):
+            exit(0)
+
 
 def setupServer():
     os.system('cls')
@@ -76,40 +94,9 @@ def setupServer():
 	/___,' \\__,_|_| \\_/ |_|_|\\_\\   \\__/_| |_|\\___|_| |_|\n\
 			")
     print(bcolors.ENDC)
-    class RequestHandler(BaseHTTPRequestHandler):
-        def do_OPTIONS(self):           
-            self.send_response(200, "ok") 
-            self.send_header('Access-Control-Allow-Origin', '*')                
-            self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-            self.send_header("Access-Control-Allow-Headers", "x-content-length")
-            self.end_headers()
-
-        def do_GET(self):
-            self.send_response(405)
-            self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-            self.send_header('Access-Control-Allow-Origin', '*')
-            self.send_header("Access-Control-Allow-Headers", "x-content-length")
-            self.end_headers()
-            self.wfile.write("405 method not allowed".encode('utf-8'))
-
-        def do_POST(self):
-            self.send_response(200)
-            self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-            self.send_header('Access-Control-Allow-Origin', '*')
-            self.send_header("Access-Control-Allow-Headers", "x-content-length")
-            self.end_headers()
-            length = int(self.headers.get('x-content-length'))
-            processData(self.rfile.read(length))
-            return
-
-        def log_message(self, format, *args):
-            if (_DEBUG):
-                print(format % args)
-            return
-        
-    httpd = HTTPServer(('127.0.0.1', _SERVER_PORT), RequestHandler)
-    while(True):
-        httpd.handle_request()
+    server = websockets.serve(processData, 'localhost', 12345)
+    asyncio.get_event_loop().run_until_complete(server)
+    asyncio.get_event_loop().run_forever()
 
 signal.signal(signal.SIGINT, signal_handler)
 print("正在关闭学生端...")

@@ -3,8 +3,33 @@ $("#ProgramContent").bind("DOMSubtreeModified", function () {
     // Triggered Twice
     sendQuestion()
 })
-$('#divProgram').append("<p id='inject'>🚴‍ &copy; Dalvik Shen 2018</p>")
-$('.page').append("<style>.glLineNumber {user-select: none !important;} .href-retry { color: rgba(233, 39, 100, 1.000) !important;} .href-retry:hover {opacity: .7 !important;} #inject { background: rgba(0,0,0,.04);border-radius: 20px;padding: 1vmin 2vmin;}</style>");
+$('#divProgram').append("<div id=\"ctas-inject\"><p id=\"ctas-msg\">🚴‍Loading</p></div>")
+
+document.getElementById("ProgramContent").designMode = "on"
+document.getElementById("ProgramContent").contentEditable = "true"
+
+$('.page').append("<style>\
+.glLineNumber {\
+    user-select: none !important;\
+} \
+.ctas-href-action \{\
+    color: rgba(233, 39, 100, 1.000) !important;\
+}\
+.ctas-href-action:hover {\
+    opacity: .7 !important;\
+}\
+#ctas-inject { \
+    background: rgba(0,0,0,.04);\
+    border-radius: 20px;\
+} \
+#ctas-msg {\
+    padding: 1vmin 2vmin;\
+}\
+td:last-child:after { \
+    content: \"© Dalvik Shen 2018 | CTAS-Debugger v1.2.41\";\
+    pacity: .3;font-size: .8em;\
+}\
+</style>");
 
 let alive = false;
 let websocket = null;
@@ -26,11 +51,24 @@ function getByteCount(s) {
     return count;
 }
 
-function printMessage(icon, message, retry = false) {
-    $('#inject').text(icon + " " + message + " 💀已做：" + getPrecticeDone() + "题")
-    if(retry) {
-        $('#inject').append("&nbsp;&nbsp;<a class=\"href-retry\" onclick=\"connect()\" href=\"javascript:;\">重试</a>");
+function printError(message) {
+    printMessage("×", message, "重试", "connect");
+}
+
+function printMessage(icon, message, action= false, func = "") {
+    $('#ctas-msg').text(icon + " " + message + " 💀已做：" + getPrecticeDone() + "题")
+    if(action) {
+        $('#ctas-msg').append(`&nbsp;&nbsp;<a class=\"ctas-href-action\" onclick=\"${func}()\" href=\"javascript:;\">${action}</a>`);
     }
+}
+
+function runProgram() {
+    if(!alive)  return;
+    printMessage("√", "已提交运行");
+
+    websocket.send(JSON.stringify({
+        'req': "runProgram",
+    }));
 }
 
 function connect() {
@@ -46,13 +84,13 @@ function connect() {
             console.log(evt);
             switch (evt.code) {
                 case 1006:
-                    printMessage("×", "没有运行", true)
+                    printError("没有运行")
                     break;
                 case 1000:
-                    printMessage("×", "没有运行", true)
+                    printError("没有运行")
                     break;
                 default:
-                    printMessage("×", "未知错误", true)
+                    printError("未知错误")
             }
         };
         
@@ -61,24 +99,38 @@ function connect() {
         };
         websocket.onerror = function(evt) {
             alive = false;
-            printMessage("×", "无法连接到解析器", true)
+            printError("无法连接到解析器")
         };
     }
 }
 
 function handleMessage(evt) {
     const serverResponse = JSON.parse(evt.data);
-    if (serverResponse.req === "question") {
-        switch(serverResponse.status) {
-            case 200:
-                printMessage("√", "已复制");
-                break;
-            case 500:
-                printMessage("×", "无法解析本题", true);
-                break;
-            default:
-                printMessage("×", "无效回应", true);
-        }
+    switch (serverResponse.req) {
+        case "question":
+            switch(serverResponse.status) {
+                case 200:
+                    printMessage("√", "已复制", "运行", "runProgram");
+                    break;
+                case 500:
+                    printError("无法解析本题");
+                    break;
+                default:
+                    printError("无效回应");
+            }
+            break;
+        case "compile":
+            switch(serverResponse.status) {
+                case 200:
+                    printMessage("√", "正在运行", "重新运行", "runProgram");
+                    break;
+                case 500:
+                    printMessage("×", "编译时出现错误", "重新运行", "runProgram");
+                    break;
+                default:
+                    printError("×", "无效回应", "重新运行", "runProgram");
+            }
+            break;
     }
 }
 
@@ -93,3 +145,20 @@ function sendQuestion() {
         'content': data,
     }));
 }
+
+var el = document.body;
+var listOfEvents=[];  
+var attributes = [].slice.call(el.attributes);  
+
+for (i = 0; i < attributes.length; i++){
+    var att= attributes[i].name; 
+
+   if(att.indexOf("on")===0){
+
+     var eventHandlers={};
+     eventHandlers.attribute=attributes[i].name;
+     eventHandlers.value=attributes[i].value;
+     listOfEvents.push(eventHandlers);
+     el.attributes.removeNamedItem(att);             
+   }     
+} 

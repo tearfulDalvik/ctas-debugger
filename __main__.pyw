@@ -53,34 +53,39 @@ def log(packet):
 async def processData(websocket, path):
     while True:
         data = json.loads(await websocket.recv())
-        postvars = data['content']
-        # 更换莫名的空格成空格
-        postvars = postvars.encode("utf-8").replace(b'\xe3\x80\x80', b'\x20').decode("utf-8")
-        # 删掉行号
-        postvars = re.sub(r"<div *class= *\" *glLineNumber *\">\d+ *</div>(\d{,3})?(\))?", "" , postvars)
-        # 处理换行
-        postvars = postvars.replace("<br>", "\n")
-        # 替换中文符号
-        postvars = re.sub(r"(“|”)", r"\"" , postvars)
-        postvars = re.sub(r"(‘|’)", r"\'" , postvars)
-        postvars = postvars.replace("（", "(")
-        postvars = postvars.replace("）", ")")
-        # 取消 HTML 实体
-        postvars = html.unescape(postvars)
-        pyperclip.copy(postvars)
-        log("\n======== 已复制 ========\n")
-        log(postvars)
-        await websocket.send(json.dumps({"req": "question", "status": 200}, sort_keys=True))
-        try:
+        if (data['req'] == 'question'):
+            postvars = data['content']
+            # 更换莫名的空格成空格
+            postvars = postvars.encode("utf-8").replace(b'\xe3\x80\x80', b'\x20').decode("utf-8")
+            # 删掉行号
+            postvars = re.sub(r"<div *class= *\" *glLineNumber *\">\d+ *</div>(\d{,3})?(\))?", "" , postvars)
+            postvars = postvars.replace("<div>", "\n")
+            postvars = postvars.replace("</div>", "")
+            # 处理换行
+            postvars = postvars.replace("<br>", "\n")
+            # 替换中文符号
+            postvars = re.sub(r"(“|”)", r"\"" , postvars)
+            postvars = re.sub(r"(‘|’)", r"\'" , postvars)
+            postvars = postvars.replace("（", "(")
+            postvars = postvars.replace("）", ")")
+            # 取消 HTML 实体
+            postvars = html.unescape(postvars)
+            pyperclip.copy(postvars)
+            log("\n======== 已复制 ========\n")
+            log(postvars)
             f = open("cache/problem.cpp", "w")
             f.write(postvars)
-            compi= os.popen("g++ cache/problem.cpp -o cache/problem")
-            if(platform.system() == "Darwin"):
-                os.system('open cache/problem')
-        except:
-            await websocket.send(json.dumps({"req": "compile", "status": 500, "content": compi}, sort_keys=True))
-        if (_DEBUG):
-            exit(0)
+            await websocket.send(json.dumps({"req": "question", "status": 200}, sort_keys=True))
+        elif(data['req'] == "runProgram"):
+            try:
+                state = os.system("g++ cache/problem.cpp -o cache/problem") == 0
+                await websocket.send(json.dumps({"req": "compile", "status": 200 if state else 500}, sort_keys=True))
+                if(platform.system() == "Darwin"):
+                    os.system('open cache/problem')
+            except:
+                
+                if (_DEBUG):
+                    exit(0)
 
 
 def setupServer():

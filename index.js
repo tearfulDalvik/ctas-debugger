@@ -1,4 +1,8 @@
 let prect_counter = 0;
+let alive = false;
+let websocket = null;
+connect();
+
 $("#ProgramContent").bind("DOMSubtreeModified", function () {
     // Triggered Twice
     sendQuestion()
@@ -27,13 +31,9 @@ $('.page').append("<style>\
 }\
 td:last-child:after { \
     content: \"© Dalvik Shen 2018 | CTAS-Debugger v1.2.41\";\
-    pacity: .3;font-size: .8em;\
+    opacity: .3;font-size: .8em;\
 }\
 </style>");
-
-let alive = false;
-let websocket = null;
-connect();
 
 function getPrecticeDone() {
     return prect_counter++ % 2 == 0 ? (prect_counter + 1) / 2 : prect_counter / 2;
@@ -73,7 +73,7 @@ function runProgram() {
 
 function connect() {
     if(!alive) {
-        const wsUri = "ws://localhost:12345/";
+        const wsUri = "ws://[::1]:12345/";
         websocket = new WebSocket(wsUri);
         websocket.onopen = function(evt) { 
             alive = true;
@@ -84,10 +84,10 @@ function connect() {
             console.log(evt);
             switch (evt.code) {
                 case 1006:
-                    printError("没有运行")
+                    printError("已断开")
                     break;
                 case 1000:
-                    printError("没有运行")
+                    printError("已关闭")
                     break;
                 default:
                     printError("未知错误")
@@ -126,6 +126,9 @@ function handleMessage(evt) {
                     break;
                 case 500:
                     printMessage("×", "编译时出现错误", "重新运行", "runProgram");
+                    break;
+                case 503:
+                    printMessage("×", "平台不受支持");
                     break;
                 default:
                     printError("×", "无效回应", "重新运行", "runProgram");

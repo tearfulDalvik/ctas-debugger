@@ -26,11 +26,13 @@ import pyperclip
 import asyncio
 import json
 import websockets
+import subprocess
 
 _SERVER_PORT = 12345
 _DEBUG = False
 
 server = False
+run_dir = os.getcwd()
 
 class bcolors:
     HEADER = '\033[95m'
@@ -57,8 +59,10 @@ async def processData(websocket, path):
             postvars = data['content']
             # 更换莫名的空格成空格
             postvars = postvars.encode("utf-8").replace(b'\xe3\x80\x80', b'\x20').decode("utf-8")
+            if(_DEBUG):
+                print(postvars)
             # 删掉行号
-            postvars = re.sub(r"<div *class= *\" *glLineNumber *\">\d+ *</div>(\d{,3})?(\))?", "" , postvars)
+            postvars = re.sub(r"<div *class= *\" *glLineNumber *\">\d+\D+ *?<\/div>(\d{,3})?(\))?", "" , postvars)
             postvars = postvars.replace("<div>", "\n")
             postvars = postvars.replace("</div>", "")
             # 处理换行
@@ -72,24 +76,30 @@ async def processData(websocket, path):
             postvars = html.unescape(postvars)
             pyperclip.copy(postvars)
             log("\n======== 已复制 ========\n")
-            log(postvars)
-            f = open("cache/problem.cpp", "w")
+            try:
+                os.remove("{}/cache/problem.cpp".format(run_dir))
+            except OSError:
+                pass
+            f = open("{}/cache/problem.cpp".format(run_dir), "w")
             f.write(postvars)
+            f.flush()
+            log(postvars)
             await websocket.send(json.dumps({"req": "question", "status": 200}, sort_keys=True))
         elif(data['req'] == "runProgram"):
             try:
-                state = os.system("g++ cache/problem.cpp -o cache/problem") == 0
-                await websocket.send(json.dumps({"req": "compile", "status": 200 if state else 500}, sort_keys=True))
                 if(platform.system() == "Darwin"):
-                    os.system('open cache/problem')
-            except:
-                
-                if (_DEBUG):
-                    exit(0)
+                    state = subprocess.run("chmod +x {}/scripts/run-Darwin && open {}/scripts/run-Darwin".format(run_dir, run_dir), shell=True).returncode == 0
+                    await websocket.send(json.dumps({"req": "compile", "status": 200 if state else 500}, sort_keys=True))
+                else:
+                    await websocket.send(json.dumps({"req": "compile", "status": 503}, sort_keys=True))
+            except Exception as e:
+                print("error occurred: %s" % str(e))
+                exit(0)
 
 
 def setupServer():
     os.system('cls')
+    os.system('clear')
     print(bcolors.WARNING)
     print("\
 	    ___      _       _ _        __ _                \n\

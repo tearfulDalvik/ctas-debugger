@@ -113,6 +113,7 @@ function connect() {
 }
 
 function handleMessage(evt) {
+    leaveMessage = false;
     const serverResponse = JSON.parse(evt.data);
     if (serverResponse.seq != getPrecticeDone()) return;
     switch (serverResponse.req) {

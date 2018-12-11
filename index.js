@@ -81,7 +81,6 @@ function connect() {
         };
         websocket.onclose = function(evt) {
             alive = false;
-            console.log(evt);
             switch (evt.code) {
                 case 1006:
                     printError("已断开")

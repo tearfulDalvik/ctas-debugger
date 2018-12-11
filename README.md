@@ -1,0 +1,80 @@
+# ctas-debugger
+
+A Debug Tool for [CTAS Student System](http://172.20.2.205.cqu.pt/ctas/). This tool includes supports MacOS and Windows, ready to install in a offline environment.
+
+[![pipeline status](https://git.ifengge.me/Dalvik/ctas-debugger/badges/master/pipeline.svg)](https://git.ifengge.me/Dalvik/ctas-debugger/commits/master)
+
+
+
+### License
+
+This program is made by [Dalvik Shen](https://ifengge.me/about/). All rights reserved and commercial use is prohibited. 
+
+This program is a crack of CTAS System. As such, it is subject to the CTAS System's user license. Subject to the university regulations and local law. Use at your own risk.
+
+
+
+## Features
+
+- Edit codes directly in the webpage
+- Run code instantly
+- Compile/Link error outputs
+- Hide everything on Windows, neither a Taskbar icon nor a console window will be displayed
+- Save your outputs for 5 seconds after a successfully run, then everything will disappear again
+- Copy your codes automatically
+- Unlock copying, selecting and context menu in every CTAS pages
+
+
+
+## Installation
+
+### Windows
+Run install.bat and follow the instruction to install.
+
+> Be aware! Offline installation is only available on Windows.
+
+
+
+### MacOS
+If you are MacOS user, make sure [Python 3](https://www.python.org/download/releases/3.0/) is installed on your system, then run the command below in the terminal.
+```
+$ pip3 install -r installation.txt
+```
+
+
+
+## Getting Started
+
+This is a guide only tested on [Google Chrome](https://dl.google.com).
+
+- **Before you logged in, turn on Developer Tools ( ⌥⌘I or Ctrl+Shift+I ) **
+
+- Follow the regular steps and load a question.
+- Run \_\_main\_\_.pyw 
+  - Windows: Double click, and a black windows will flashing past
+  - MacOS: Run ```pyhton3 __main__.pyw``` in the terminal
+- Switch to ```Console``` Tab 
+- Change the Javascript contexts dropdown to ```IFrame - main (CPractice.aspx)```
+- Paste everything in index.min.js then press ```Enter```
+- Awala! You are a cheater now !
+
+
+
+## Usage
+
+#### Selecting and debugging
+
+You can just copy or select something as usual,  then run and debug with Visual Studio, g++, LLDB or something you like.
+
+
+
+#### Editing
+You can edit codes in the webpage by just click on the code section.
+
+CTAS-Debugger will handle your modification and write it to your clipboard automatically.
+
+
+
+#### Run (Beta)
+
+Follow the injected message and you'll see a ```run``` button when your code is ready.

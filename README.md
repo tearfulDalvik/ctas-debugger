@@ -10,7 +10,7 @@ A Debug Tool for [CTAS Student System](http://172.20.2.205.cqu.pt/ctas/). This t
 
 This program is made by [Dalvik Shen](https://ifengge.me/about/). All rights reserved and commercial use is prohibited. 
 
-This program is a crack of CTAS System. As such, it is subject to the CTAS System's user license. Subject to the university regulations and local law. Use at your own risk.
+This program is a crack of CTAS Student System. As such, it is subject to the CTAS System's user license. Subject to the university regulations and local law. Use at your own risk.
 
 
 
@@ -22,14 +22,14 @@ This program is a crack of CTAS System. As such, it is subject to the CTAS Syste
 - Hide everything on Windows, neither a Taskbar icon nor a console window will be displayed
 - Save your outputs for 5 seconds after a successfully run, then everything will disappear again
 - Copy your codes automatically
-- Unlock copying, selecting and context menu in every CTAS pages
+- Unlock copying, selecting and context menu in every CTAS page
 
 
 
 ## Installation
 
 ### Windows
-Run install.bat and follow the instruction to install.
+Run install.bat and follow the instructions to install.
 
 > Be aware! Offline installation is only available on Windows.
 
@@ -38,7 +38,7 @@ Run install.bat and follow the instruction to install.
 ### MacOS
 If you are MacOS user, make sure [Python 3](https://www.python.org/download/releases/3.0/) is installed on your system, then run the command below in the terminal.
 ```
-$ pip3 install -r installation.txt
+$ pip3 install -r requirements.txt
 ```
 
 
@@ -51,7 +51,7 @@ This is a guide only tested on [Google Chrome](https://dl.google.com).
 
 - Follow the regular steps and load a question.
 - Run \_\_main\_\_.pyw 
-  - Windows: Double click, and a black windows will flashing past
+  - Windows: Double click, and a black window will flashing past
   - MacOS: Run ```pyhton3 __main__.pyw``` in the terminal
 - Switch to ```Console``` Tab 
 - Change the Javascript contexts dropdown to ```IFrame - main (CPractice.aspx)```

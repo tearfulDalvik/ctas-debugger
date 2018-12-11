@@ -30,6 +30,7 @@ import subprocess
 
 _SERVER_PORT = 12345
 _DEBUG = False
+_PROTOCOL_VER = 2
 
 server = False
 run_dir = os.getcwd()
@@ -55,6 +56,13 @@ def log(packet):
 async def processData(websocket, path):
     while True:
         data = json.loads(await websocket.recv())
+        try:
+            if(data['proto'] != _PROTOCOL_VER) :
+                raise Exception('Protocol Version Mismatch')
+        except Exception as e:
+            await websocket.send(json.dumps({"req": "error", "status": 400, "seq": data['seq'], "reason": repr(e)}, sort_keys=True))
+            websocket.close()
+            return
         if (data['req'] == 'question'):
             postvars = data['content']
             # 更换莫名的空格成空格
@@ -76,7 +84,10 @@ async def processData(websocket, path):
             postvars = html.unescape(postvars)
             pyperclip.copy(postvars)
             log("\n======== 已复制 ========\n")
+            
             try:
+                if not os.path.exists("{}/cache".format(run_dir)):
+                    os.makedirs("{}/cache".format(run_dir))
                 os.remove("{}/cache/problem.cpp".format(run_dir))
             except OSError:
                 pass
@@ -84,14 +95,14 @@ async def processData(websocket, path):
             f.write(postvars)
             f.flush()
             log(postvars)
-            await websocket.send(json.dumps({"req": "question", "status": 200}, sort_keys=True))
+            await websocket.send(json.dumps({"req": "question", "status": 200, "seq": data['seq']}, sort_keys=True))
         elif(data['req'] == "runProgram"):
             try:
                 if(platform.system() == "Darwin"):
                     state = subprocess.run("chmod +x {}/scripts/run-Darwin && open {}/scripts/run-Darwin".format(run_dir, run_dir), shell=True).returncode == 0
-                    await websocket.send(json.dumps({"req": "compile", "status": 200 if state else 500}, sort_keys=True))
+                    await websocket.send(json.dumps({"req": "compile", "seq": data['seq'], "status": 200 if state else 500}, sort_keys=True))
                 else:
-                    await websocket.send(json.dumps({"req": "compile", "status": 503}, sort_keys=True))
+                    await websocket.send(json.dumps({"req": "compile", "seq": data['seq'], "status": 503}, sort_keys=True))
             except Exception as e:
                 print("error occurred: %s" % str(e))
                 exit(0)
@@ -100,6 +111,7 @@ async def processData(websocket, path):
 def setupServer():
     os.system('cls')
     os.system('clear')
+    print(bcolors.OKBLUE + "CTAS Debugger Core\nCopyright Dalvik Shen 2018. All Rights Reserved. Prohibition of distribution\n")
     print(bcolors.WARNING)
     print("\
 	    ___      _       _ _        __ _                \n\

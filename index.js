@@ -1,11 +1,17 @@
 let prect_counter = 0;
 let alive = false;
 let websocket = null;
+const proto_ver = 2;
+
+// Whether override message by closed or disconnected
+let leaveMessage = false;
+
 connect();
 
 $("#ProgramContent").bind("DOMSubtreeModified", function () {
     // Triggered Twice
-    sendQuestion()
+    prect_counter++;
+    sendQuestion();
 })
 $('#divProgram').append("<div id=\"ctas-inject\"><p id=\"ctas-msg\">🚴‍Loading</p></div>")
 
@@ -36,7 +42,8 @@ td:last-child:after { \
 </style>");
 
 function getPrecticeDone() {
-    return prect_counter++ % 2 == 0 ? (prect_counter + 1) / 2 : prect_counter / 2;
+    console.log(prect_counter);
+    return prect_counter % 2 == 0 ? prect_counter / 2 : (prect_counter + 1) / 2;
 }
 
 function getByteCount(s) {
@@ -68,6 +75,7 @@ function runProgram() {
 
     websocket.send(JSON.stringify({
         'req': "runProgram",
+        'proto': proto_ver
     }));
 }
 
@@ -81,6 +89,7 @@ function connect() {
         };
         websocket.onclose = function(evt) {
             alive = false;
+            if (leaveMessage) return;
             switch (evt.code) {
                 case 1006:
                     printError("已断开")
@@ -105,6 +114,7 @@ function connect() {
 
 function handleMessage(evt) {
     const serverResponse = JSON.parse(evt.data);
+    if (serverResponse.seq != getPrecticeDone()) return;
     switch (serverResponse.req) {
         case "question":
             switch(serverResponse.status) {
@@ -130,21 +140,30 @@ function handleMessage(evt) {
                     printMessage("×", "平台不受支持");
                     break;
                 default:
-                    printError("×", "无效回应", "重新运行", "runProgram");
+                    printError("无效回应");
             }
             break;
+        case "error":
+            leaveMessage = true;
+            printError(serverResponse['reason']);
     }
 }
 
 function sendQuestion() {
     const data = $("#ProgramContent").html()
-    if(!alive || data.length == 0)  return;
+    if(!alive) {
+        printError("未连接");
+        return;
+    }
+    if(data.length == 0)  return;
     printMessage("", "正在载入...");
 
     websocket.send(JSON.stringify({
         'req': "question",
         'length': getByteCount(data),
         'content': data,
+        'seq': getPrecticeDone(),
+        'proto': proto_ver
     }));
 }
 
@@ -156,7 +175,6 @@ for (i = 0; i < attributes.length; i++){
     var att= attributes[i].name; 
 
    if(att.indexOf("on")===0){
-
      var eventHandlers={};
      eventHandlers.attribute=attributes[i].name;
      eventHandlers.value=attributes[i].value;

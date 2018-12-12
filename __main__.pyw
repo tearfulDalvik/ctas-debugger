@@ -29,7 +29,7 @@ import websockets
 import subprocess
 
 _SERVER_PORT = 12345
-_DEBUG = False
+_DEBUG = True
 _PROTOCOL_VER = 2
 
 server = False
@@ -67,6 +67,7 @@ async def processData(websocket, path):
             postvars = data['content']
             # 更换莫名的空格成空格
             postvars = postvars.encode("utf-8").replace(b'\xe3\x80\x80', b'\x20').decode("utf-8")
+
             if(_DEBUG):
                 print(postvars)
             # 删掉行号
@@ -84,17 +85,64 @@ async def processData(websocket, path):
             postvars = html.unescape(postvars)
             pyperclip.copy(postvars)
             log("\n======== 已复制 ========\n")
-            
+
+            # Clean cache and build env
             try:
                 if not os.path.exists("{}/cache".format(run_dir)):
                     os.makedirs("{}/cache".format(run_dir))
-                os.remove("{}/cache/problem.cpp".format(run_dir))
+                for file in os.scandir("{}/cache".format(run_dir)):
+                    os.unlink(file.path)
             except OSError:
                 pass
-            f = open("{}/cache/problem.cpp".format(run_dir), "w")
-            f.write(postvars)
-            f.flush()
-            log(postvars)
+
+            matcher = re.compile(r'\w+\.(h|cpp)(?!")')
+            files = []
+            fileNames = []
+            fileParts = []
+            startPos = 0
+            endPos = 0
+            for fileMatch in matcher.finditer(postvars):
+                fileNames.append(fileMatch.group())
+                # 每次循环都将开始指针重定向到上次结束的地方
+                startPos = endPos
+                endPos = 0
+                lineStart = postvars[0: fileMatch.start()].rfind("\n")
+                if (lineStart == -1):
+                    # 找不到上一个换行符，则此时在第一行
+                    startPos = 0
+                else:
+                    # 找到了上一个换行符，这就是上一个文件的所有代码
+                    endPos = postvars[0: fileMatch.start()].rfind("\n")
+                if (startPos < endPos):
+                    # 仅当开始指针小于结束指针时写入缓冲区，此时数据已经准备完毕
+                    fileParts.append(postvars[startPos: endPos])
+                log(str(startPos)+ "|"+str(endPos))
+            # 将剩余部分写入
+            fileParts.append(postvars[endPos: len(postvars)])
+
+            # 现在将文件名和内容对应起来，上面只是做好了内容分割，但是可能会过度分割
+            if (fileNames):
+                namePos = 0
+                tempBody = ""
+                for part in fileParts:
+                    if (namePos >= len(fileNames)):
+                        break
+                    haveKeyword = matcher.search(part)
+                    tempBody = tempBody + part
+                    if (haveKeyword is not None):
+                        files.append({"fileName": fileNames[namePos], "content": tempBody})
+                        log(fileNames[namePos] + "\n" + tempBody + "\n\n")
+                        namePos = namePos + 1
+                        tempBody = ''
+                for fileContent in files:
+                    f = open("{}/cache/{}".format(run_dir, fileContent["fileName"]), "w")
+                    f.write(fileContent["content"])
+                    f.flush()
+            else:
+                # Single file project
+                f = open("{}/cache/problem.cpp".format(run_dir), "w")
+                f.write(postvars)
+                f.flush()
             await websocket.send(json.dumps({"req": "question", "status": 200, "seq": data['seq']}, sort_keys=True))
         elif(data['req'] == "runProgram"):
             try:

@@ -42,7 +42,6 @@ td:last-child:after { \
 </style>");
 
 function getPrecticeDone() {
-    console.log(prect_counter);
     return prect_counter % 2 == 0 ? prect_counter / 2 : (prect_counter + 1) / 2;
 }
 
@@ -75,6 +74,7 @@ function runProgram() {
 
     websocket.send(JSON.stringify({
         'req': "runProgram",
+        'seq': getPrecticeDone(),
         'proto': proto_ver
     }));
 }

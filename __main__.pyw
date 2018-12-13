@@ -29,10 +29,10 @@ import websockets
 import subprocess
 
 _SERVER_PORT = 12345
-_DEBUG = True
+_DEBUG = False
 _PROTOCOL_VER = 2
 
-server = False
+server = None
 run_dir = os.getcwd()
 
 class bcolors:
@@ -71,7 +71,7 @@ async def processData(websocket, path):
             if(_DEBUG):
                 print(postvars)
             # 删掉行号
-            postvars = re.sub(r"<div *class= *\" *glLineNumber *\">\d+\D+ *?<\/div>(\d{,3})?(\))?", "" , postvars)
+            postvars = re.sub(r"<div *class= *\" *glLineNumber *\">\d+\D+ *?<\/div>(\d{,3})?(\)|）)?", "" , postvars)
             postvars = postvars.replace("<div>", "\n")
             postvars = postvars.replace("</div>", "")
             # 处理换行

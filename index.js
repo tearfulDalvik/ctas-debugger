@@ -13,7 +13,17 @@ $("#ProgramContent").bind("DOMSubtreeModified", function () {
     prect_counter++;
     sendQuestion();
 })
-$('#divProgram').append("<div id=\"ctas-inject\"><p id=\"ctas-msg\">🚴‍Loading</p></div>")
+
+// 保留错题显示
+try {
+    $("#cAnswerSummary").bind("DOMSubtreeModified", function () {
+        // Triggered Twice
+        $("#ctas-msg2").text($("#cAnswerSummary").text());
+    })
+} catch(ignored){
+
+}
+$('#divProgram').append("<div id=\"ctas-inject\"><p id=\"ctas-msg\">🚴‍Loading</p><p id=\"ctas-msg2\"></p></div>")
 
 document.getElementById("ProgramContent").designMode = "on"
 document.getElementById("ProgramContent").contentEditable = "true"
@@ -63,8 +73,19 @@ function printError(message) {
 
 function printMessage(icon, message, action= false, func = "") {
     $('#ctas-msg').text(icon + " " + message + " 💀已做：" + getPrecticeDone() + "题")
+    $("#ctas-msg2").text()
+    if(alive) $('#ctas-msg').append("&nbsp;&nbsp;<a class=\"ctas-href-action\" onclick=\"disconnect()\" href=\"javascript:;\">∥ 暂停</a>")
     if(action) {
         $('#ctas-msg').append(`&nbsp;&nbsp;<a class=\"ctas-href-action\" onclick=\"${func}()\" href=\"javascript:;\">${action}</a>`);
+    }
+}
+
+function disconnect() {
+    if (alive) {
+        websocket.close();
+        alive = false;
+        leaveMessage = true;
+        printMessage("▹", "已暂停", "开始", "connect");
     }
 }
 
@@ -153,7 +174,7 @@ function handleMessage(evt) {
 function sendQuestion() {
     const data = $("#ProgramContent").html()
     if(!alive) {
-        printError("未连接");
+        if(!leaveMessage) printError("未连接");
         return;
     }
     if(data.length == 0)  return;

@@ -45,6 +45,14 @@ $('.page').append("<style>\
 tr > :first-child > div > div {\
     position: fixed;\
 }\
+#ctas-msg {\
+    display: flex;\
+    flex-flow: row;\
+    align-items: baseline;\
+}\
+#ctas-msg :nth-child(3) {\
+    margin-left: auto;\
+}\
 #ctas-inject { \
     background: rgba(0,0,0,.04);\
     border-radius: 6px;\
@@ -100,6 +108,7 @@ function printMessage(icon, message, action= false, func = "") {
     if(action) {
         $('#ctas-msg').append(`&nbsp;&nbsp;<a class=\"ctas-href-action\" onclick=\"${func}()\" href=\"javascript:;\">${action}</a>`);
     }
+    $('#ctas-msg').append(`&nbsp;&nbsp;<a class=\"ctas-href-action\" onclick=\"toggleSetPanel()\" href=\"javascript:;\">设置</a>`);
 }
 
 function disconnect() {

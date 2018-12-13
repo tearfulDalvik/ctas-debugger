@@ -18,7 +18,7 @@ $("#ProgramContent").bind("DOMSubtreeModified", function () {
 try {
     $("#cAnswerSummary").bind("DOMSubtreeModified", function () {
         // Triggered Twice
-        $("#ctas-msg2").text($("#cAnswerSummary").text());
+        $("#ctas-msg2").text("解析：" + $("#cAnswerSummary").text());
     })
 } catch(ignored){
 
@@ -34,16 +34,38 @@ $('.page').append("<style>\
 } \
 .ctas-href-action \{\
     color: rgba(233, 39, 100, 1.000) !important;\
+    border: solid rgba(25,25,25, .1) 1px;\
+    border-radius: 3px;\
+    padding: .6vmin 1.5vmin !important;\
+    background: rgba(255,255,255,.5) !important;\
 }\
 .ctas-href-action:hover {\
     opacity: .7 !important;\
 }\
+tr > :first-child > div > div {\
+    position: fixed;\
+}\
 #ctas-inject { \
     background: rgba(0,0,0,.04);\
-    border-radius: 20px;\
+    border-radius: 6px;\
+    margin: 2vmin 0;\
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);\
 } \
-#ctas-msg {\
+#ctas-inject > * {\
     padding: 1vmin 2vmin;\
+    color: #666666;\
+}\
+#ctas-inject > :last-child {\
+    background: rgba(0,0,0, .1);\
+    margin-top: 0px;\
+    padding-top: .5vmin;\
+    border-radius: 0 0 6px 6px;\
+    padding-bottom: .5vmin;\
+    color: #444444;\
+}\
+#ctas-inject > :not(:last-child) {\
+    padding-bottom: 0;\
+    margin-bottom: 1vmin;\
 }\
 td:last-child:after { \
     content: \"© Dalvik Shen 2018 | CTAS-Debugger v1.2.41\";\
@@ -73,8 +95,8 @@ function printError(message) {
 
 function printMessage(icon, message, action= false, func = "") {
     $('#ctas-msg').text(icon + " " + message + " 💀已做：" + getPrecticeDone() + "题")
-    $("#ctas-msg2").text()
-    if(alive) $('#ctas-msg').append("&nbsp;&nbsp;<a class=\"ctas-href-action\" onclick=\"disconnect()\" href=\"javascript:;\">∥ 暂停</a>")
+    $("#ctas-msg2").text("")
+    if(alive) $('#ctas-msg').append("&nbsp;&nbsp;&nbsp;<a class=\"ctas-href-action\" onclick=\"disconnect()\" href=\"javascript:;\">∥ 暂停</a>")
     if(action) {
         $('#ctas-msg').append(`&nbsp;&nbsp;<a class=\"ctas-href-action\" onclick=\"${func}()\" href=\"javascript:;\">${action}</a>`);
     }
@@ -85,7 +107,7 @@ function disconnect() {
         websocket.close();
         alive = false;
         leaveMessage = true;
-        printMessage("▹", "已暂停", "开始", "connect");
+        printMessage("∥", "已暂停", "▹ 开始", "connect");
     }
 }
 
@@ -204,3 +226,5 @@ for (i = 0; i < attributes.length; i++){
      el.attributes.removeNamedItem(att);             
    }     
 } 
+
+console.log("%cCTAS Debugger Client\n(C) Dalvik Shen 2018. All Rights Reserved. Prohibition of distribution.", "color:grey;")

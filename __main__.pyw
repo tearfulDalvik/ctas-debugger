@@ -71,7 +71,8 @@ async def processData(websocket, path):
             if(_DEBUG):
                 print(postvars)
             # 删掉行号
-            postvars = re.sub(r"<div *class= *\" *glLineNumber *\">\d+\D+ *?<\/div>(\d{,3})?(\)|）)?", "" , postvars)
+            postvars = re.sub(r"<div *class= *\" *glLineNumber *\">\d+\D+ *?<\/div>(\d{,3})?(\)|）|\.)?", "" , postvars)
+            # 处理用户编辑
             postvars = postvars.replace("<div>", "\n")
             postvars = postvars.replace("</div>", "")
             # 处理换行
@@ -83,10 +84,12 @@ async def processData(websocket, path):
             postvars = postvars.replace("）", ")")
             # 取消 HTML 实体
             postvars = html.unescape(postvars)
+            # 更正 main 函数签名
+            postvars = postvars.replace("void main(", "int main(")
             pyperclip.copy(postvars)
             log("\n======== 已复制 ========\n")
 
-            # Clean cache and build env
+            # 清理运行环境
             try:
                 if not os.path.exists("{}/cache".format(run_dir)):
                     os.makedirs("{}/cache".format(run_dir))
@@ -95,6 +98,7 @@ async def processData(websocket, path):
             except OSError:
                 pass
 
+            # 判断是否是多文件
             matcher = re.compile(r'\w+\.(h|cpp)(?!")')
             files = []
             fileNames = []
@@ -122,6 +126,7 @@ async def processData(websocket, path):
 
             # 现在将文件名和内容对应起来，上面只是做好了内容分割，但是可能会过度分割
             if (fileNames):
+                # 多文件
                 namePos = 0
                 tempBody = ""
                 for part in fileParts:
@@ -139,7 +144,7 @@ async def processData(websocket, path):
                     f.write(fileContent["content"])
                     f.flush()
             else:
-                # Single file project
+                # 单文件，全部写入
                 f = open("{}/cache/problem.cpp".format(run_dir), "w")
                 f.write(postvars)
                 f.flush()
@@ -159,7 +164,7 @@ async def processData(websocket, path):
 def setupServer():
     os.system('cls')
     os.system('clear')
-    print(bcolors.OKBLUE + "CTAS Debugger Core\nCopyright Dalvik Shen 2018. All Rights Reserved. Prohibition of distribution\n")
+    print(bcolors.OKBLUE + "CTAS Debugger Server\n(C) Dalvik Shen 2018. All Rights Reserved. Prohibition of distribution.\n")
     print(bcolors.WARNING)
     print("\
 	    ___      _       _ _        __ _                \n\

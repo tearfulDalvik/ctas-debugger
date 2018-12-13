@@ -4,7 +4,25 @@ NC='\033[0m' # No Color
 clear
 
 echo $"CTAS Debugger Runtime Tool"
-echo $"Copyright Dalvik Shen 2018. All Rights Reserved. Prohibition of distribution\n"
+echo $"(C) Dalvik Shen 2018. All Rights Reserved. Prohibition of distribution.\n"
+
+_PAUSE="0"
+
+case $1 in
+    "-h")
+        echo "OVERVIEW: CTAS Debugger MacOS compiler"
+        echo "USAGE: run-Darwin [options]"
+        echo "OPTIONS:"
+        echo "-h                    Print this help document and exit."
+        echo "--pause               Pause after run."
+        exit 0
+		;;
+	--pause)
+        _PAUSE="1"
+		break
+		;;
+esac
+  
 echo $"Compiling..."
 
 BASEDIR=$(dirname "$0")
@@ -16,8 +34,13 @@ then
     $BASEDIR/../cache/problem
     echo $"\n${GREEN}Done!${NC} Cleaning..."
     rm $BASEDIR/../cache/problem
-    echo $"This windows will disappear in 5 sec"
-    sleep 5s;
+    if [ "$_PAUSE" = "1" ]
+    then
+        read -n 1 -s -r -p "Press any key to continue"
+    else
+        echo $"This window will disappear in 5 sec"
+        sleep 5s;
+    fi
 else
     echo $"\n${RED}Ended with error above.${NC}" && read -n 1 -s -r -p "Press any key to continue"
 fi

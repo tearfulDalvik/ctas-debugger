@@ -9,7 +9,7 @@ echo $"Compiling..."
 
 BASEDIR=$(dirname "$0")
 
-if g++ $BASEDIR/../cache/* -o $BASEDIR/../cache/problem
+if g++ $BASEDIR/../cache/*.cpp -o $BASEDIR/../cache/problem
 then
     echo $"Done\nRunning...\n"
     clear

@@ -22,6 +22,8 @@ This program is a crack of CTAS Student System. As such, it is subject to the CT
 - Hide everything on Windows, neither a Taskbar icon nor a console window will be displayed
 - Save your outputs for 5 seconds after a successfully run, then everything will disappear again
 - Copy your codes automatically
+- Fix page control bar
+- Multple file problems support
 - Unlock copying, selecting and context menu in every CTAS page
 
 

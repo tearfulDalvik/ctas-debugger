@@ -48,7 +48,7 @@ $ pip3 install -r requirements.txt
 
 This is a guide only tested on [Google Chrome](https://dl.google.com).
 
-- **Before you logged in, turn on Developer Tools ( ⌥⌘I or Ctrl+Shift+I ) **
+- ** Before you logged in, turn on Developer Tools ( ⌥⌘I or Ctrl+Shift+I ) **
 
 - Follow the regular steps and load a question.
 - Run \_\_main\_\_.pyw 
@@ -76,13 +76,13 @@ Key 		  	| Function
 `S`   			| Subsequent question
 
 
-#### Selecting and debugging
+#### Select and debug
 
-You can just copy or select something as usual,  then run and debug with Visual Studio, g++, LLDB or something you like.
+You can just copy or select something as usual,  then run and debug with Visual Studio, LLDB or something else you like.
 
 
 
-#### Editing
+#### Edit
 You can edit codes in the webpage by just click on the code section.
 
 CTAS-Debugger will handle your modification and write it to your clipboard automatically.

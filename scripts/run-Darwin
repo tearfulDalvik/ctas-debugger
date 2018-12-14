@@ -22,7 +22,9 @@ case $1 in
 		break
 		;;
 esac
-  
+
+
+SECONDS=0
 echo $"Compiling..."
 
 BASEDIR=$(dirname "$0")
@@ -32,13 +34,14 @@ then
     echo $"Done\nRunning...\n"
     clear
     $BASEDIR/../cache/problem
-    echo $"\n${GREEN}Done!${NC} Cleaning..."
+    duration=$SECONDS
+    echo $"\n${GREEN}Done${NC} everything in ${duration} sec."
     rm $BASEDIR/../cache/problem
     if [ "$_PAUSE" = "1" ]
     then
         read -n 1 -s -r -p "Press any key to continue"
     else
-        echo $"This window will disappear in 5 sec"
+        echo $"This window will disappear very soon."
         sleep 5s;
     fi
 else

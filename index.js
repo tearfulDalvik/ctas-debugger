@@ -45,10 +45,14 @@ $('.page').append("<style>\
 tr > :first-child > div > div {\
     position: fixed;\
 }\
-#ctas-msg {\
+#ctas-msg :not(p){\
     display: flex;\
     flex-flow: row;\
     align-items: baseline;\
+    opacity: 0;\
+    -webkit-transition-property: opacity;\
+    transition-property: opacity;\
+    will-change: opacity;\
 }\
 #ctas-msg :nth-child(3) {\
     margin-left: auto;\
@@ -78,6 +82,25 @@ tr > :first-child > div > div {\
 td:last-child:after { \
     content: \"© Dalvik Shen 2018 | CTAS-Debugger v1.2.41\";\
     opacity: .3;font-size: .8em;\
+}\
+\
+@keyframes tip {\
+    0% {\
+        opacity: 1;\
+    }\
+    25% {\
+        opacity: 0;\
+    }\
+    50% {\
+        opacity: 1;\
+        font-size: 1.2em;\
+    }\
+    75% {\
+        opacity: 0;\
+    }\
+    100% {\
+        opacity: 1;\
+    }\
 }\
 </style>");
 
@@ -237,3 +260,46 @@ for (i = 0; i < attributes.length; i++){
 } 
 
 console.log("%cCTAS Debugger Client\n(C) Dalvik Shen 2018. All Rights Reserved. Prohibition of distribution.", "color:grey;")
+
+// 快捷键模块
+document.onkeypress = function(e) {
+    e = e || window.event;
+    if ($("#ProgramContent").is(":focus")) return;
+    var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+    if (charCode) {
+        switch(charCode) {
+            // Q
+            case 113:
+                $(".chosenItem:nth-child(1)").click()
+                break;
+            // W
+            case 119:
+                $(".chosenItem:nth-child(2)").click()
+                break;
+            // E
+            case 101:
+                $(".chosenItem:nth-child(3)").click()
+                break;
+            // R
+            case 114:
+                $(".chosenItem:nth-child(4)").click()
+                break;
+            // A
+            case 97:
+                previousQuestion();
+                break;
+            // S
+            case 115:
+                nextQuestion();
+                break;
+            // T
+            case 116:
+                runProgram();
+                break;
+        }
+    }
+};
+$(".page tr>td:first-child").append("<span data-v-5ee6af50 class=\"hover\">\
+    <span data-v-5ee6af50 class=\"hover-inner\">\
+    <span data-v-5ee6af50 class=\"noise\">\
+</span>")

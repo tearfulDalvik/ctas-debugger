@@ -25,8 +25,7 @@ This program is a crack of CTAS Student System. As such, it is subject to the CT
 - Fix page control bar
 - Multple file problems support
 - Unlock copying, selecting and context menu in every CTAS page
-
-
+- Use shortcut keys to complete your homework!
 
 ## Installation
 
@@ -63,6 +62,19 @@ This is a guide only tested on [Google Chrome](https://dl.google.com).
 
 
 ## Usage
+
+
+#### Keymaps
+Key 		  	| Function
+------------ 	| ---------------------
+`Q`   			| Select anwser A
+`W`   			| Select anwser B
+`E`   			| Select anwser C
+`R`   			| Select anwser D
+`T`   			| Run code
+`A`   			| Previous question
+`S`   			| Subsequent question
+
 
 #### Selecting and debugging
 

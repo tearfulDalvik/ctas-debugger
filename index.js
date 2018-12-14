@@ -45,14 +45,10 @@ $('.page').append("<style>\
 tr > :first-child > div > div {\
     position: fixed;\
 }\
-#ctas-msg :not(p){\
+#ctas-msg {\
     display: flex;\
     flex-flow: row;\
     align-items: baseline;\
-    opacity: 0;\
-    -webkit-transition-property: opacity;\
-    transition-property: opacity;\
-    will-change: opacity;\
 }\
 #ctas-msg :nth-child(3) {\
     margin-left: auto;\
@@ -299,7 +295,3 @@ document.onkeypress = function(e) {
         }
     }
 };
-$(".page tr>td:first-child").append("<span data-v-5ee6af50 class=\"hover\">\
-    <span data-v-5ee6af50 class=\"hover-inner\">\
-    <span data-v-5ee6af50 class=\"noise\">\
-</span>")

@@ -1,6 +1,6 @@
 # ctas-debugger
 
-A Debug Tool for [CTAS Student System](http://172.20.2.205.cqu.pt/ctas/). This tool includes supports MacOS and Windows, ready to install in a offline environment.
+A Debug Tool for [CTAS Student System](http://172.20.2.205.cqu.pt/ctas/). This tool includes support of MacOS and Windows, ready to install in a offline environment.
 
 [![pipeline status](https://git.ifengge.me/Dalvik/ctas-debugger/badges/master/pipeline.svg)](https://git.ifengge.me/Dalvik/ctas-debugger/commits/master)
 
@@ -67,10 +67,10 @@ This is a guide only tested on [Google Chrome](https://dl.google.com).
 #### Keymaps
 Key 		  	| Function
 ------------ 	| ---------------------
-`Q`   			| Select anwser A
-`W`   			| Select anwser B
-`E`   			| Select anwser C
-`R`   			| Select anwser D
+`Q`   			| Select answer A
+`W`   			| Select answer B
+`E`   			| Select answer C
+`R`   			| Select answer D
 `T`   			| Run code
 `A`   			| Previous question
 `S`   			| Subsequent question

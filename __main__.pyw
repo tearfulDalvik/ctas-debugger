@@ -86,6 +86,7 @@ async def processData(websocket, path):
             postvars = html.unescape(postvars)
             # 更正 main 函数签名
             postvars = postvars.replace("void main(", "int main(")
+            postvars = postvars.replace("#include \"stdafx.h\"\n", "")
             pyperclip.copy(postvars)
             log("\n======== 已复制 ========\n")
 

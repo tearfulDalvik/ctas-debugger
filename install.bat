@@ -1,7 +1,7 @@
 @echo off
 SET bat_path=%~dp0
 echo CTAS Debugger Command Line Tool
-echo Copyright Dalvik Shen 2018. All Rights Reserved. Prohibition of distribution
+echo (C) Dalvik Shen 2018. All Rights Reserved. Prohibition of distribution
 echo.
 
 set "PYTHON_VERSION=3.7.1"

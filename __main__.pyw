@@ -158,6 +158,9 @@ async def processData(websocket, path):
                 if(platform.system() == "Darwin"):
                     state = subprocess.run("chmod +x {}/scripts/run-Darwin && open {}/scripts/run-Darwin".format(run_dir, run_dir), shell=True).returncode == 0
                     await websocket.send(json.dumps({"req": "compile", "seq": data['seq'], "status": 200 if state else 500}, sort_keys=True))
+                if(platform.system() == "Windows"):
+                    state = subprocess.run("start cmd /c {}/scripts/run-Windows".format(run_dir), shell=True).returncode == 0
+                    await websocket.send(json.dumps({"req": "compile", "seq": data['seq'], "status": 200 if state else 500}, sort_keys=True))
                 else:
                     await websocket.send(json.dumps({"req": "compile", "seq": data['seq'], "status": 503}, sort_keys=True))
             except Exception as e:

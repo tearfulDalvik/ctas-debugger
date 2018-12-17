@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from http.server import *
 from urllib.parse import urlparse
 import signal
 import sys
@@ -27,10 +26,13 @@ import asyncio
 import json
 import websockets
 import subprocess
+import api
+from threading import Thread
 
 _SERVER_PORT = 12345
-_DEBUG = False
+_DEBUG = True
 _PROTOCOL_VER = 2
+_API_SERVER = True
 
 server = None
 run_dir = os.getcwd()
@@ -56,6 +58,7 @@ def log(packet):
 async def processData(websocket, path):
     while True:
         data = json.loads(await websocket.recv())
+        api.update_websocket_info(websocket)
         try:
             if(data['proto'] != _PROTOCOL_VER) :
                 raise Exception('Protocol Version Mismatch')
@@ -175,9 +178,13 @@ def setupServer():
 	/___,' \\__,_|_| \\_/ |_|_|\\_\\   \\__/_| |_|\\___|_| |_|\n\
 			")
     print(bcolors.ENDC)
-    server = websockets.serve(processData, 'localhost', 12345)
+    # Websocket Parse Server
+    server = websockets.serve(processData, 'localhost', _SERVER_PORT)
     asyncio.get_event_loop().run_until_complete(server)
-    asyncio.get_event_loop().run_forever()
+    Thread(target=asyncio.get_event_loop().run_forever, args=[]).start()
+
+    # API Server
+    Thread(target=api.start_api_server, args=[_DEBUG]).start()
 
 signal.signal(signal.SIGINT, signal_handler)
 print("正在关闭学生端...")

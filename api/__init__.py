@@ -16,7 +16,7 @@ def start_api_server(debug, port = 12346):
     api.__WEBSOCKET_ALIVE__ = False
     if(debug):
         print("API Server Enabled")
-    print("API server listening on http://%s:%d" % (get_host_ip(), __SERVER_PORT__))
+        print("API server listening on http://%s:%d\n" % (get_host_ip(), __SERVER_PORT__))
     run()
 
 def update_websocket_info(websocket):

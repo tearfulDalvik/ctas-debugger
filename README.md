@@ -10,22 +10,23 @@ A Debug Tool for [CTAS Student System](http://172.20.2.205.cqu.pt/ctas/). This t
 
 This program is made by [Dalvik Shen](https://ifengge.me/about/). All rights reserved and commercial use is prohibited. 
 
-This program is a crack of CTAS Student System. As such, it is subject to the CTAS System's user license. Subject to the university regulations and local law. Use at your own risk.
+This program is a crack of the CTAS Student System. As such, it is subject to the CTAS System's user license. Subject to the university regulations and local law. Use at your own risk.
 
 
 
 ## Features
 
 - Edit codes directly in the webpage
-- Run code instantly
+- Run instantly
 - Compile/Link error outputs
 - Hide everything on Windows, neither a Taskbar icon nor a console window will be displayed
 - Save your outputs for 5 seconds after a successfully run, then everything will disappear again
 - Copy your codes automatically
 - Fix page control bar
 - Multple file problems support
-- Unlock copying, selecting and context menu in every CTAS page
+- Unlock copying, selecting and context menu in every CTAS pages
 - Use shortcut keys to complete your homework!
+- APIs available and iOS remote client is included, you can also custom your remote control on other platforms.
 
 ## Installation
 
@@ -54,7 +55,7 @@ This is a guide only tested on [Google Chrome](https://dl.google.com).
 - Run \_\_main\_\_.pyw 
   - Windows: Double click, and a black window will flashing past
   - MacOS: Run ```pyhton3 __main__.pyw``` in the terminal
-- Switch to ```Console``` Tab 
+- Switch to the ```Console``` Tab 
 - Change the Javascript contexts dropdown to ```IFrame - main (CPractice.aspx)```
 - Paste everything in index.min.js then press ```Enter```
 - Awala! You are a cheater now !

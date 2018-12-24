@@ -19,6 +19,7 @@ import sys
 import os
 import api
 import mserver
+from queue import Queue
 from threading import Thread
 
 global __DEBUG__ 
@@ -44,7 +45,6 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 def signal_handler(sig, frame):
-    log("SIGINT exit")
     sys.exit(0)
 
 def setupServer():
@@ -60,11 +60,12 @@ def setupServer():
 	/___,' \\__,_|_| \\_/ |_|_|\\_\\   \\__/_| |_|\\___|_| |_|\n\
 			")
     print(bcolors.ENDC)
+    queue = Queue()
     # Main Server
-    Thread(target=mserver.start_server, args=[__DEBUG__]).start()
+    Thread(target=mserver.start_server, args=[queue, __DEBUG__]).start()
     # API Server
     if(_API_SERVER):
-        Thread(target=api.start_api_server, args=[__DEBUG__]).start()
+        Thread(target=api.start_api_server, args=[queue, __DEBUG__]).start()
 
 signal.signal(signal.SIGINT, signal_handler)
 print("正在关闭学生端...")

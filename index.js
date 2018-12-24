@@ -186,7 +186,7 @@ function connect() {
 function handleMessage(evt) {
     leaveMessage = false;
     const serverResponse = JSON.parse(evt.data);
-    if (serverResponse.seq != getPrecticeDone()) return;
+    if (serverResponse.seq && serverResponse.seq != getPrecticeDone()) return;
     switch (serverResponse.req) {
         case "question":
             switch(serverResponse.status) {
@@ -215,6 +215,26 @@ function handleMessage(evt) {
                     printError("无效回应");
             }
             break;
+        case "answer":
+            $(".chosenItem:nth-child(" + (serverResponse.content + 1) + ")").click()
+            break;
+
+        case "action":
+            switch(serverResponse.content) {
+                case "run":
+                    runProgram();
+                    break;
+
+                case "previous":
+                    previousQuestion();
+                    break;
+                    
+                case "next":
+                    nextQuestion();
+                    break;
+            }
+            break;
+
         case "error":
             leaveMessage = true;
             printError(serverResponse['reason']);

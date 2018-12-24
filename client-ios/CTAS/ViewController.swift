@@ -15,6 +15,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var btn_c: UIButton!
     @IBOutlet weak var btn_d: UIButton!
     
+    @IBOutlet weak var btn_run: UIBarButtonItem!
+    
     @IBOutlet weak var btn_prev: UIButton!
     @IBOutlet weak var btn_subq: UIButton!
     
@@ -27,48 +29,96 @@ class ViewController: UIViewController {
         
     }
     
+    @IBAction func onD(_ sender: Any) {
+        onAnwser(what: "d")
+    }
+    @IBAction func onC(_ sender: Any) {
+        onAnwser(what: "c")
+    }
+    @IBAction func onB(_ sender: Any) {
+        onAnwser(what: "b")
+    }
     @IBAction func onA(_ sender: Any) {
-        let url = URL(string: serverAddr + "answer/a")
-        pb_connect.startAnimating()
-        self.btn_a.isEnabled = false
-        self.btn_b.isEnabled = false
-        self.btn_c.isEnabled = false
-        self.btn_d.isEnabled = false
-        self.btn_prev.isEnabled = false
-        self.btn_subq.isEnabled = false
-        
+        onAnwser(what: "a")
+    }
+    
+    @IBAction func onPrevious(_ sender: Any) {
+        onAction(what: "previous")
+    }
+    
+    @IBAction func onNext(_ sender: Any) {
+        onAction(what: "next")
+    }
+    
+    @IBAction func onRun(_ sender: Any) {
+        onAction(what: "next")
+    }
+    
+    func onUIPrepare() {
+        setUIState(state: false)
+    }
+    
+    func onUIError(message: String) {
+        setUIState(state: false)
+        self.tv_state.text = message
+        self.tv_state.isHidden = false
+        self.pb_connect.stopAnimating()
+        self.btn_connect.isHidden = false
+    }
+    
+    func onUIDone() {
+        setUIState(state: true)
+    }
+    
+    func setUIState(state: Bool) {
+        if(state) {
+            self.pb_connect.stopAnimating()
+        } else {
+            pb_connect.startAnimating()
+        }
+        self.et_ip.isHidden = state
+        self.tv_state.isHidden = state
+        self.isConnected = state
+        self.btn_a.isEnabled = state
+        self.btn_b.isEnabled = state
+        self.btn_run.isEnabled = state
+        self.btn_c.isEnabled = state
+        self.btn_d.isEnabled = state
+        self.btn_prev.isEnabled = state
+        self.btn_subq.isEnabled = state
+    }
+    
+    func onAnwser(what: String) {
+        sendRequest(realm: "answer", data: what)
+    }
+    
+    func onAction(what: String) {
+        sendRequest(realm: "action", data: what)
+    }
+    
+    func sendRequest(realm: String, data: String) {
+        let url = URL(string: serverAddr + realm + "/" + data)
+        onUIPrepare()
         let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
             guard data != nil else {
                 DispatchQueue.main.async {
-                    self.tv_state.text = "Can not connect to specified server."
-                    self.tv_state.isHidden = false
-                    self.pb_connect.stopAnimating()
-                    self.btn_connect.isHidden = false
+                    self.onUIError(message: "Can not connect to specified server.")
                 }
                 return
             }
-                DispatchQueue.main.async {
-                    if let httpResponse = response as? HTTPURLResponse {
-                        switch(httpResponse.statusCode) {
-                            case 200:
-                                self.tv_server.text = "OK!"
-                            case 503:
-                                self.tv_server.text = "Connected to server but not attached to CTAS System"
-                            default:
-                                self.tv_server.text = "Faild"
-                        }
+            DispatchQueue.main.async {
+                if let httpResponse = response as? HTTPURLResponse {
+                    switch(httpResponse.statusCode) {
+                    case 200:
+                        self.tv_server.text = "OK!"
+                    case 503:
+                        self.tv_server.text = "Connected to server but not attached to CTAS System"
+                    default:
+                        self.tv_server.text = "Faild"
                     }
-                    self.pb_connect.stopAnimating()
-                    self.et_ip.isHidden = true
-                    self.tv_state.isHidden = true
-                    self.isConnected = true
-                    self.btn_a.isEnabled = true
-                    self.btn_b.isEnabled = true
-                    self.btn_c.isEnabled = true
-                    self.btn_d.isEnabled = true
-                    self.btn_prev.isEnabled = true
-                    self.btn_subq.isEnabled = true
                 }
+                self.onUIDone()
+            }
         }
         
         task.resume()
@@ -93,6 +143,7 @@ class ViewController: UIViewController {
                     self.tv_state.text = "Can not connect to specified server."
                     self.tv_state.isHidden = false
                     self.pb_connect.stopAnimating()
+                    self.et_ip.isHidden = false
                     self.btn_connect.isHidden = false
                 }
                 return
@@ -111,6 +162,7 @@ class ViewController: UIViewController {
                     self.btn_a.isEnabled = true
                     self.btn_b.isEnabled = true
                     self.btn_c.isEnabled = true
+                    self.btn_run.isEnabled = true
                     self.btn_d.isEnabled = true
                     self.btn_prev.isEnabled = true
                     self.btn_subq.isEnabled = true
@@ -121,6 +173,7 @@ class ViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.tv_state.text = "Can not understand specified server."
                     self.tv_state.isHidden = false
+                    self.et_ip.isHidden = false
                     self.pb_connect.stopAnimating()
                     self.btn_connect.isHidden = false
                 }

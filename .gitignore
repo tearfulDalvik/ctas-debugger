@@ -3,4 +3,5 @@ docker-compose.yml
 .idea
 .env
 
+__pycache__/
 cache/

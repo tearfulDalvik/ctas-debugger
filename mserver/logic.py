@@ -7,14 +7,13 @@ import html
 import os
 import re
 import subprocess
-from api import update_websocket_info
 import mserver
 
 run_dir = os.getcwd()
 async def processData(websocket, path):
     while True:
         data = json.loads(await websocket.recv())
-        update_websocket_info(websocket)
+        mserver.__MESSAGE_POOL__.put(websocket)
         try:
             if(data['proto'] != mserver.__PROTOCOL_VER__) :
                 raise Exception('Protocol Version Mismatch')

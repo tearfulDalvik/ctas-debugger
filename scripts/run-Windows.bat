@@ -11,7 +11,7 @@ echo Compiling...
 SET BASEDIR=%~dp0
 
 
-g++ %BASEDIR:~0,-1%\..\cache\problem.cpp -o %BASEDIR:~0,-1%\..\cache\problem.exe
+g++ %BASEDIR:~0,-1%\..\cache\*.cpp -o %BASEDIR:~0,-1%\..\cache\problem.exe
 if %ERRORLEVEL% == 0 GOTO run
 pause
 exit /b 1

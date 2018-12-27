@@ -86,12 +86,6 @@
                                     <action selector="onNext:" destination="FyZ-vC-P2w" eventType="touchUpInside" id="CAV-J5-k1w"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="192.168.1.121" placeholder="IP Address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="tta-Za-Cog">
-                                <rect key="frame" x="44" y="609" width="89" height="33.333333333333371"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="continue" enablesReturnKeyAutomatically="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                            </textField>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Searching for CTAS Server..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t66-ZN-p8V">
                                 <rect key="frame" x="66" y="552" width="243" height="15"/>
                                 <constraints>
@@ -154,8 +148,16 @@ Cg
                                     <action selector="onC:" destination="FyZ-vC-P2w" eventType="touchUpInside" id="Kln-ns-cpw"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T3g-hZ-hUt">
-                                <rect key="frame" x="144" y="609" width="59" height="33.333333333333371"/>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="192.168.2.1" placeholder="IP Address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="tta-Za-Cog">
+                                <rect key="frame" x="198" y="163" width="89" height="33.333333333333371"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="continue" enablesReturnKeyAutomatically="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T3g-hZ-hUt">
+                                <rect key="frame" x="298" y="163" width="59" height="33.333333333333371"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Connect"/>
                                 <connections>
                                     <action selector="onConnect:" destination="FyZ-vC-P2w" eventType="touchUpInside" id="n5q-BR-cMl"/>
@@ -167,28 +169,22 @@ Cg
                             <constraint firstItem="eT3-x1-jbf" firstAttribute="leading" secondItem="eJK-ik-0Pr" secondAttribute="leading" constant="86" id="4ur-Ek-a5X"/>
                             <constraint firstItem="eJK-ik-0Pr" firstAttribute="trailing" secondItem="wxf-w0-PT0" secondAttribute="trailing" constant="86" id="5wf-Xb-NXX"/>
                             <constraint firstItem="eJK-ik-0Pr" firstAttribute="trailing" secondItem="kom-OC-OqT" secondAttribute="trailing" constant="16" id="9iy-jR-dIH"/>
-                            <constraint firstItem="Pie-sS-TRw" firstAttribute="top" secondItem="tta-Za-Cog" secondAttribute="bottom" constant="30" id="BXO-dr-kz0"/>
                             <constraint firstItem="t66-ZN-p8V" firstAttribute="top" secondItem="wxf-w0-PT0" secondAttribute="bottom" constant="8" id="Bye-9J-eY0"/>
                             <constraint firstItem="Um0-5R-n5D" firstAttribute="firstBaseline" secondItem="uzw-pk-mKX" secondAttribute="baseline" constant="10" symbolType="layoutAnchor" id="C4g-L6-Mzo"/>
                             <constraint firstItem="uzw-pk-mKX" firstAttribute="top" secondItem="eJK-ik-0Pr" secondAttribute="top" constant="15" id="HAU-jw-zfs"/>
                             <constraint firstAttribute="bottom" secondItem="t66-ZN-p8V" secondAttribute="bottom" constant="245" id="HUg-NJ-uWG"/>
                             <constraint firstItem="eJK-ik-0Pr" firstAttribute="trailing" secondItem="qXr-S6-tjB" secondAttribute="trailing" constant="16" id="HjS-4p-02q"/>
-                            <constraint firstItem="Pie-sS-TRw" firstAttribute="top" secondItem="T3g-hZ-hUt" secondAttribute="bottom" constant="30" id="Khn-Qx-lsK"/>
                             <constraint firstItem="eJK-ik-0Pr" firstAttribute="trailing" secondItem="S2X-Vh-QyM" secondAttribute="trailing" constant="18" id="MjR-Lh-cqS"/>
                             <constraint firstItem="eJK-ik-0Pr" firstAttribute="bottom" secondItem="Pie-sS-TRw" secondAttribute="bottom" constant="16" id="PNw-2q-45I"/>
                             <constraint firstItem="S2X-Vh-QyM" firstAttribute="leading" secondItem="eJK-ik-0Pr" secondAttribute="leading" constant="16" id="SJp-qj-Nyp"/>
                             <constraint firstItem="S2X-Vh-QyM" firstAttribute="top" secondItem="qXr-S6-tjB" secondAttribute="bottom" constant="12" id="TMY-RD-u7M"/>
                             <constraint firstItem="kom-OC-OqT" firstAttribute="top" secondItem="Uik-ki-b2Z" secondAttribute="bottom" constant="12" id="VaC-Eg-32p"/>
                             <constraint firstItem="eT3-x1-jbf" firstAttribute="top" secondItem="S2X-Vh-QyM" secondAttribute="bottom" constant="15" id="Zq2-cm-c89"/>
-                            <constraint firstItem="T3g-hZ-hUt" firstAttribute="top" secondItem="t66-ZN-p8V" secondAttribute="bottom" constant="42" id="Zye-4D-IWT"/>
                             <constraint firstItem="t66-ZN-p8V" firstAttribute="top" secondItem="eT3-x1-jbf" secondAttribute="bottom" constant="8" symbolic="YES" id="bXL-CP-SMr"/>
                             <constraint firstItem="Uik-ki-b2Z" firstAttribute="top" secondItem="Um0-5R-n5D" secondAttribute="bottom" constant="26" id="bdM-yj-mUM"/>
                             <constraint firstItem="Um0-5R-n5D" firstAttribute="leading" secondItem="eJK-ik-0Pr" secondAttribute="leading" constant="16" id="gff-ae-jvX"/>
-                            <constraint firstItem="tta-Za-Cog" firstAttribute="leading" secondItem="eJK-ik-0Pr" secondAttribute="leading" constant="44" id="if6-0H-pZn"/>
-                            <constraint firstItem="tta-Za-Cog" firstAttribute="centerY" secondItem="T3g-hZ-hUt" secondAttribute="centerY" id="iyS-FE-wiO"/>
                             <constraint firstItem="eJK-ik-0Pr" firstAttribute="trailing" secondItem="uzw-pk-mKX" secondAttribute="trailing" constant="16" id="j0l-u9-Pv3"/>
                             <constraint firstItem="t66-ZN-p8V" firstAttribute="leading" secondItem="eJK-ik-0Pr" secondAttribute="leading" constant="66" id="jB4-rB-yzP"/>
-                            <constraint firstItem="T3g-hZ-hUt" firstAttribute="leading" secondItem="tta-Za-Cog" secondAttribute="trailing" constant="11" id="koD-h2-yzL"/>
                             <constraint firstItem="qXr-S6-tjB" firstAttribute="leading" secondItem="eJK-ik-0Pr" secondAttribute="leading" constant="16" id="nJv-0S-Zx0"/>
                             <constraint firstItem="qXr-S6-tjB" firstAttribute="top" secondItem="kom-OC-OqT" secondAttribute="bottom" constant="12" id="nfG-pc-9c9"/>
                             <constraint firstItem="Pie-sS-TRw" firstAttribute="leading" secondItem="eJK-ik-0Pr" secondAttribute="leading" constant="16" id="nxP-au-O13"/>

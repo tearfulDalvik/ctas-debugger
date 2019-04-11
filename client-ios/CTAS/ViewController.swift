@@ -19,6 +19,8 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var btn_prev: UIButton!
     @IBOutlet weak var btn_subq: UIButton!
+    @IBOutlet weak var btn_top: UIButton!
+    @IBOutlet weak var btn_bottom: UIButton!
     
     lazy var serverAddr: String = "";
     var isConnected = false;
@@ -26,9 +28,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.et_ip.endEditing(true)
+    }
+
     @IBAction func onD(_ sender: Any) {
         onAnwser(what: "d")
     }
@@ -52,6 +57,14 @@ class ViewController: UIViewController {
     
     @IBAction func onRun(_ sender: Any) {
         onAction(what: "next")
+    }
+    
+    @IBAction func onBottom(_ sender: Any) {
+        onAction(what: "to_bottom")
+    }
+    
+    @IBAction func onTop(_ sender: Any) {
+        onAction(what: "to_top")
     }
     
     func onUIPrepare() {
@@ -86,6 +99,8 @@ class ViewController: UIViewController {
         self.btn_d.isEnabled = state
         self.btn_prev.isEnabled = state
         self.btn_subq.isEnabled = state
+        self.btn_bottom.isEnabled = state
+        self.btn_top.isEnabled = state
     }
     
     func onAnwser(what: String) {
@@ -166,6 +181,8 @@ class ViewController: UIViewController {
                     self.btn_d.isEnabled = true
                     self.btn_prev.isEnabled = true
                     self.btn_subq.isEnabled = true
+                    self.btn_bottom.isEnabled = true
+                    self.btn_top.isEnabled = true
                     self.handleResponse(result: result)
                 }
                 
@@ -202,5 +219,6 @@ class ViewController: UIViewController {
             case version = "version"
         }
     }
+
 }
 

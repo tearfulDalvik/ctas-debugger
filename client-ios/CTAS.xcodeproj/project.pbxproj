@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		31320BB121D7109D0049D3B5 /* ForceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31320BB021D7109D0049D3B5 /* ForceButton.swift */; };
 		31A46CC421C69E5100F3E065 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A46CC321C69E5100F3E065 /* AppDelegate.swift */; };
 		31A46CC621C69E5100F3E065 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A46CC521C69E5100F3E065 /* ViewController.swift */; };
 		31A46CC921C69E5100F3E065 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31A46CC721C69E5100F3E065 /* Main.storyboard */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		31320BB021D7109D0049D3B5 /* ForceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceButton.swift; sourceTree = "<group>"; };
 		31A46CC021C69E5100F3E065 /* CTAS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CTAS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		31A46CC321C69E5100F3E065 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		31A46CC521C69E5100F3E065 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 				31A46CCA21C69E5300F3E065 /* Assets.xcassets */,
 				31A46CCC21C69E5300F3E065 /* LaunchScreen.storyboard */,
 				31A46CCF21C69E5300F3E065 /* Info.plist */,
+				31320BB021D7109D0049D3B5 /* ForceButton.swift */,
 			);
 			path = CTAS;
 			sourceTree = "<group>";
@@ -137,6 +140,7 @@
 			files = (
 				31A46CC621C69E5100F3E065 /* ViewController.swift in Sources */,
 				31A46CC421C69E5100F3E065 /* AppDelegate.swift in Sources */,
+				31320BB121D7109D0049D3B5 /* ForceButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

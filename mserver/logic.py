@@ -60,7 +60,7 @@ async def processData(websocket, path):
                 pass
 
             # 判断是否是多文件
-            matcher = re.compile(r'\w+\.(h|cpp)(?!")')
+            matcher = re.compile(r'\w+\.(h|cpp)(?!"|>)')
             files = []
             fileNames = []
             fileParts = []

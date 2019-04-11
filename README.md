@@ -1,4 +1,5 @@
-[![pipeline status](https://colab.ifengge.cn/Dalvik/ctas-debugger/badges/master/pipeline.svg)](https://colab.ifengge.cn/Dalvik/ctas-debugger/commits/master)
+# CTAS-Debugger
+[![pipeline status](https://colab.ifengge.cn/Dalvik/ctas-debugger/badges/master/pipeline.svg)](https://colab.ifengge.cn/Dalvik/ctas-debugger/commits/master)    
 A Debug Tool for [CTAS Student System](http://172.20.2.205.cqu.pt/ctas/). This tool includes support of both macOS and Windows, ready to install in a offline environment.
 
 ### License

@@ -66,7 +66,7 @@ Key 		  	| Function
 `E`   			| Select answer C
 `R`   			| Select answer D
 `T`   			| Run code
-`A`   			| Previous questio
+`A`   			| Previous question
 `S`   			| Subsequent question
 `G`   			| Navigate to bottom
 `g`   			| Navigate to top

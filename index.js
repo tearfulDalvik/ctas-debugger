@@ -157,7 +157,7 @@ class Client {
       case "action":
         switch (serverResponse.content) {
           case "run":
-            runProgram();
+            client.runProgram();
             break;
 
           case "to_top":
@@ -272,7 +272,7 @@ class Interaction {
             break;
           // T
           case 116:
-            runProgram();
+            client.runProgram();
             break;
 
           // G which is to-bottom action in vim

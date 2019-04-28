@@ -56,7 +56,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func onRun(_ sender: Any) {
-        onAction(what: "next")
+        onAction(what: "run")
     }
     
     @IBAction func onBottom(_ sender: Any) {
@@ -112,9 +112,17 @@ class ViewController: UIViewController {
     }
     
     func sendRequest(realm: String, data: String) {
-        let url = URL(string: serverAddr + realm + "/" + data)
         onUIPrepare()
-        let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
+        
+        // Calculates time
+        let startTime = DispatchTime.now().uptimeNanoseconds
+        
+        // Preparing request
+        var request = URLRequest(url: URL(string: serverAddr + realm + "/" + data)!)
+        request.httpMethod = "HEAD"
+        let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
+            let elapsedNanoseconds = DispatchTime.now().uptimeNanoseconds - startTime
+            
             guard data != nil else {
                 DispatchQueue.main.async {
                     self.onUIError(message: "Can not connect to specified server.")
@@ -125,11 +133,11 @@ class ViewController: UIViewController {
                 if let httpResponse = response as? HTTPURLResponse {
                     switch(httpResponse.statusCode) {
                     case 200:
-                        self.tv_server.text = "OK!"
+                        self.tv_server.text = "OK! (\(elapsedNanoseconds/1000/1000) ms)"
                     case 503:
                         self.tv_server.text = "Connected to server but not attached to CTAS System"
                     default:
-                        self.tv_server.text = "Faild"
+                        self.tv_server.text = "server failure"
                     }
                 }
                 self.onUIDone()

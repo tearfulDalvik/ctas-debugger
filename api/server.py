@@ -5,15 +5,21 @@ import asyncio
 
 
 class RequestHandler(BaseHTTPRequestHandler):
-
     def do_GET(self):
+        self.send_header("Server", "Dalvik\'s CTAS API Server")
         if self.path == '/handshake':
             self.send_response(200)
             self.send_header("Server", "Dalvik\'s CTAS API Server")
             self.end_headers()
             self.wfile.write(json.dumps({"version": api.__API_PROTOCOL__, "status": "ok",
                                          "message": "hello from the CTAS server"}, sort_keys=True).encode("utf-8"))
-        elif self.path == '/answer/a':
+        else:
+            self.send_response(400)
+            self.end_headers()
+            self.wfile.write("400 Bad Request".encode('utf-8'))
+    def do_HEAD(self):
+        self.send_header("Server", "Dalvik\'s CTAS API Server")
+        if self.path == '/answer/a':
             self.send_anwser(0)
         elif self.path == '/answer/b':
             self.send_anwser(1)

@@ -215,12 +215,12 @@ Cg
                         <viewLayoutGuide key="safeArea" id="eJK-ik-0Pr"/>
                     </view>
                     <toolbarItems>
-                        <barButtonItem title="Run" id="GVu-IP-n6H"/>
-                        <barButtonItem width="245" style="plain" systemItem="fixedSpace" id="7g0-Vh-MMM">
+                        <barButtonItem title="Run" id="GVu-IP-n6H">
                             <connections>
-                                <action selector="onRun:" destination="FyZ-vC-P2w" id="c1O-LV-5G1"/>
+                                <action selector="onRun:" destination="FyZ-vC-P2w" id="69O-xs-u8q"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem width="245" style="plain" systemItem="fixedSpace" id="7g0-Vh-MMM"/>
                         <barButtonItem enabled="NO" title="Switch Windows" id="yxa-eM-Hkn"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="CTAS Remote" id="rzK-Nj-agI"/>
@@ -233,7 +233,7 @@ Cg
                         <outlet property="btn_connect" destination="T3g-hZ-hUt" id="7fe-aP-GtL"/>
                         <outlet property="btn_d" destination="S2X-Vh-QyM" id="9Gq-Mb-V0W"/>
                         <outlet property="btn_prev" destination="eT3-x1-jbf" id="eUH-sP-onY"/>
-                        <outlet property="btn_run" destination="7g0-Vh-MMM" id="MHh-De-HJg"/>
+                        <outlet property="btn_run" destination="GVu-IP-n6H" id="gyd-x4-a5S"/>
                         <outlet property="btn_subq" destination="cxu-69-aJY" id="N8n-LS-Dxp"/>
                         <outlet property="btn_top" destination="wxf-w0-PT0" id="T9e-hZ-5Ka"/>
                         <outlet property="et_ip" destination="tta-Za-Cog" id="y4b-jm-MQ3"/>

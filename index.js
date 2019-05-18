@@ -25,6 +25,8 @@ class Client {
     $("#ProgramContent").bind("DOMSubtreeModified", function() {
       // Triggers twice
       me.prect_counter++;
+      localStorage.setItem("lastChapter", $("#cProgram").val())
+      localStorage.setItem("lastQuestion", $("#QuestionContent > div > span:first-child").text().match(/\d+/i));
       me.sendQuestion();
     });
 
